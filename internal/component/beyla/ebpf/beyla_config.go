@@ -56,13 +56,13 @@ func (c *Component) buildConfig() map[string]interface{} {
 	config := make(map[string]interface{})
 
 	c.addPrometheusConfig(config)
+	c.addHealthCheckConfig(config)
 	c.addRoutesConfig(config)
 	c.addAttributesConfig(config)
 	c.addDiscoveryConfig(config)
 	c.addEbpfConfig(config)
 	c.addNetworkFlowsConfig(config)
 	c.addStatsConfig(config)
-	c.addInjectorConfig(config)
 	c.addFiltersConfig(config)
 	c.addTracesConfig(config)
 	c.addOTLPTracesExportConfig(config)
@@ -87,6 +87,20 @@ func (c *Component) addPrometheusConfig(config map[string]interface{}) {
 	c.fillPrometheusExportConfig(prometheus)
 
 	config["prometheus_export"] = prometheus
+}
+
+func (c *Component) addHealthCheckConfig(config map[string]interface{}) {
+	c.mut.Lock()
+	port := c.subprocessHealthPort
+	c.mut.Unlock()
+
+	if port == 0 {
+		return
+	}
+
+	config["health_check"] = map[string]interface{}{
+		"port": port,
+	}
 }
 
 func (c *Component) addInternalMetricsConfig(config map[string]interface{}) {

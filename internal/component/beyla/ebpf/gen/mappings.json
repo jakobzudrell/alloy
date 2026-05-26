@@ -6,19 +6,11 @@
     "PayloadExtraction":    "PayloadExtraction",
     "HTTPConfig":           "HTTPPayloadExtraction",
     "StatsConfig":          "Stats",
-    "SDKInject":            "Injector",
-    "WebhookConfig":        "InjectorWebhook",
-    "SDKExport":            "InjectorSDKExport",
-    "SDKResource":          "InjectorSDKResource",
     "BeylaDiscoveryConfig":   "Discovery",
     "InternalMetricsConfig": "InternalMetrics"
   },
 
-  "skip": [
-    "injector.resources.addK8sUIDAttributes",
-    "injector.resources.resourceAttributes",
-    "injector.resources.useLabelsForResourceAttributes"
-  ],
+  "skip": [],
 
   "aliases": {
     "prometheus_export.extra_resource_attributes": {
@@ -78,5 +70,5 @@
     }
   ],
 
-  "manual_sections": ["traces", "attributes", "filter", "internal_metrics"]
+  "manual_sections": ["traces", "attributes", "filter", "internal_metrics", "injector"]
 }

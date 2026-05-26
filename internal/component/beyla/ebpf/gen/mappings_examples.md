@@ -114,16 +114,6 @@ prometheus_export {
 }
 ```
 
-## skip
-
-Schema fields suppressed from TODO generation. Each is handled manually with a different alloy key.
-
-| Schema path | Reason |
-|---|---|
-| `injector.resources.addK8sUIDAttributes` | `addK8sUIDAttributes` has no direct alloy mapping; handled by hand-written code |
-| `injector.resources.resourceAttributes` | `resourceAttributes` has no direct alloy mapping; handled by hand-written code |
-| `injector.resources.useLabelsForResourceAttributes` | `useLabelsForResourceAttributes` has no direct alloy mapping; handled by hand-written code |
-
 ## manual_sections
 
 Top-level YAML sections absent from `schema.json`; config emission is hand-written.
@@ -132,6 +122,7 @@ Top-level YAML sections absent from `schema.json`; config emission is hand-writt
 - `attributes`
 - `filter`
 - `internal_metrics`
+- `injector`
 
 ## multi_section
 
@@ -172,9 +163,5 @@ Schema `$def` names mapped to custom Go type names.
 | `MapsConfig` | `EBPFMapsConfig` |
 | `PayloadExtraction` | `PayloadExtraction` |
 | `RoutesConfig` | `Routes` |
-| `SDKExport` | `InjectorSDKExport` |
-| `SDKInject` | `Injector` |
-| `SDKResource` | `InjectorSDKResource` |
 | `StatsConfig` | `Stats` |
-| `WebhookConfig` | `InjectorWebhook` |
 

@@ -267,17 +267,18 @@ func (c *Component) healthCheckLoop(ctx context.Context) error {
 
 func (c *Component) checkSubprocessHealth() error {
 	c.mut.Lock()
-	addr := c.subprocessAddr
+	port := c.subprocessHealthPort
 	c.mut.Unlock()
 
-	if addr == "" {
+	if port == 0 {
 		return fmt.Errorf("subprocess not started")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(ctx, "GET", addr+"/metrics", nil)
+	url := fmt.Sprintf("http://127.0.0.1:%d/healthz", port)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return err
 	}

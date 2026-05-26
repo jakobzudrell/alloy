@@ -51,6 +51,7 @@ type Component struct {
 	subprocessPort        int       // Port where Beyla subprocess listens
 	subprocessAddr        string    // Full address (http://localhost:PORT)
 	subprocessProfilePort int       // Beyla pprof port; 0 when pprof is disabled in Alloy
+	subprocessHealthPort  int       // Beyla /healthz port
 	subprocessCmd         *exec.Cmd // The running subprocess
 	beylaExePath          string    // Path to extracted Beyla binary
 	beylaExeClose         func()    // Closes the memfd; called early after exec, cleanup is fallback
@@ -318,6 +319,18 @@ func (c *Component) setupSubprocess(restartTimer *time.Timer) error {
 		return err
 	}
 
+	healthPort, err := findFreePort()
+	if err != nil {
+		level.Error(c.opts.Logger).Log("msg", "failed to allocate Beyla health port", "err", err)
+		c.reportUnhealthy(err)
+		c.cleanup()
+		c.scheduleRestart(restartTimer)
+		return err
+	}
+	c.mut.Lock()
+	c.subprocessHealthPort = healthPort
+	c.mut.Unlock()
+
 	configPath, cleanupConfig, err := c.writeConfigFile()
 	if err != nil {
 		level.Error(c.opts.Logger).Log("msg", "failed to write config", "err", err)
@@ -503,5 +516,6 @@ func (c *Component) cleanup() {
 	c.configPath = ""
 	c.otlpReceiverPort = 0
 	c.subprocessProfilePort = 0
+	c.subprocessHealthPort = 0
 	c.subprocessReady = false
 }

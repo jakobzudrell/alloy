@@ -131,6 +131,15 @@ type InternalMetrics struct {
 	Exporter                string        `alloy:"exporter,attr,optional"`
 }
 
+// Schema unstable across Beyla releases; grow on demand.
+type Injector struct {
+}
+
+type SamplerConfig struct {
+	Arg  string `alloy:"arg,attr,optional"`
+	Name string `alloy:"name,attr,optional"`
+}
+
 type OpenAIPayloadExtraction struct {
 	Enabled bool `alloy:"enabled,attr,optional"`
 }

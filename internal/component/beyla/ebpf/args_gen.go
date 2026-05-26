@@ -147,56 +147,6 @@ type EBPF struct {
 	WakeupLen                           int                `alloy:"wakeup_len,attr,optional"`
 }
 
-type InjectorSDKExport struct {
-	Logs    *bool `alloy:"logs,attr,optional"`
-	Metrics *bool `alloy:"metrics,attr,optional"`
-	Traces  *bool `alloy:"traces,attr,optional"`
-}
-
-type InjectorSDKResource struct {
-	AddK8sIPAttribute              bool              `alloy:"addK8sIPAttribute,attr,optional"`
-	AddK8sUIDAttributes            *bool             `alloy:"add_k8s_attributes,attr,optional"`
-	Attributes                     map[string]string `alloy:"attributes,attr,optional"`
-	UseLabelsForResourceAttributes *bool             `alloy:"use_labels,attr,optional"`
-}
-
-type SamplerConfig struct {
-	Arg  string `alloy:"arg,attr,optional"`
-	Name string `alloy:"name,attr,optional"`
-}
-
-type Quantity struct {
-	Format string `alloy:"Format,attr,optional"`
-}
-
-type InjectorWebhook struct {
-	CertPath              string         `alloy:"cert_path,attr,optional"`
-	Enable                bool           `alloy:"enable,attr,optional"`
-	KeyPath               string         `alloy:"key_path,attr,optional"`
-	MaxAdmissionBodySize  Quantity       `alloy:"max_admission_body_size,block,optional"`
-	MaxConcurrentRequests int            `alloy:"max_concurrent_requests,attr,optional"`
-	Port                  *int           `alloy:"port,attr,optional"`
-	Timeout               *time.Duration `alloy:"timeout,attr,optional"`
-}
-
-type Injector struct {
-	Debug             *bool               `alloy:"debug,attr,optional"`
-	NoAutoRestart     *bool               `alloy:"disable_auto_restart,attr,optional"`
-	EnabledSDKs       []string            `alloy:"enabled_sdks,attr,optional"`
-	Export            InjectorSDKExport   `alloy:"export,block,optional"`
-	HostMountPath     string              `alloy:"host_mount_path,attr,optional"`
-	HostPathVolumeDir string              `alloy:"host_path_volume,attr,optional"`
-	ImageVolumePath   string              `alloy:"image_volume_path,attr,optional"`
-	Instrument        Services            `alloy:"instrument,block,optional"`
-	ManageSDKVersions *bool               `alloy:"manage_sdk_versions,attr,optional"`
-	Propagators       []string            `alloy:"propagators,attr,optional"`
-	Resources         InjectorSDKResource `alloy:"resources,block,optional"`
-	DefaultSampler    SamplerConfig       `alloy:"sampler,block,optional"`
-	SDKPkgVersion     string              `alloy:"sdk_package_version,attr,optional"`
-	Webhook           InjectorWebhook     `alloy:"webhook,block,optional"`
-	OTELEndpoint      string              `alloy:"otel_endpoint,attr,optional"`
-}
-
 type Routes struct {
 	IgnoredEvents             string   `alloy:"ignore_mode,attr,optional"`
 	IgnorePatterns            []string `alloy:"ignored_patterns,attr,optional"`
