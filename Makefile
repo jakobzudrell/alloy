@@ -17,6 +17,7 @@
 ##
 ##   test                  Run tests
 ##   lint                  Lint code
+##   shellcheck            Lint shell scripts
 ##   integration-test      Run integration tests
 ##   integration-test-k8s            Run Kubernetes integration tests (CI mode)
 ##   integration-test-k8s-local-dev  Run Kubernetes integration tests via interactive menu
@@ -173,12 +174,20 @@ endif
 
 .PHONY: lint
 lint: alloylint
-	find . -name go.mod | xargs dirname | xargs -I __dir__ $(GOLANGCI_LINT_BINARY) run -v --timeout=10m
+	@find . -name go.mod -not -path '*/testdata/*' | while IFS= read -r mod; do \
+		dir="$$(dirname "$$mod")"; \
+		echo "==> golangci-lint: $$dir"; \
+		(cd "$$dir" && $(GOLANGCI_LINT_BINARY) run -v --timeout=10m) || exit 1; \
+	done
 	GOFLAGS="-tags=$(GO_TAGS)" $(ALLOYLINT_BINARY) ./...
 
 .PHONY: run-alloylint
 run-alloylint: alloylint
 	GOFLAGS="-tags=$(GO_TAGS)" $(ALLOYLINT_BINARY) ./...
+
+.PHONY: shellcheck
+shellcheck:
+	./tools/lint-shell
 
 .PHONY: test
 # We have to run test twice: once for all packages with -race and then once
